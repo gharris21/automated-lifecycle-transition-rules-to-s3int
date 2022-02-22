@@ -24,7 +24,7 @@ client = boto3.client('sts')
 # method to determine accountID 
 def getAccountID():
     account_id = client.get_caller_identity()
-    return(account_id['Account'])
+    return(account_id['829127864189'])
     #account_id = iam.CurrentUser().arn.split(':')[4]
     #return(account_id)
 
@@ -38,7 +38,7 @@ TransitionStatus = []
 # This method returns the LC policy. This policy will be used as the default LC policy 
 # for the bucket with no LC policy and for the bucket with no "Transition policy" 
 # Pass the name of the bucket with the method
-def createLCP(Name):
+def createLCP(Lifecycle.Test):
     lcp = {
             'Rules': [
                 {
@@ -79,7 +79,7 @@ policy = {}
 def createOrUpdateLCP(Name):
     ownerAccountId = getAccountID()
     try:
-        result = s3.get_bucket_lifecycle_configuration(Bucket=Name, ExpectedBucketOwner=ownerAccountId)
+        result = s3.get_bucket_lifecycle_configuration(Bucket=Name, ExpectedBucketOwner=829127864189)
         Rules= result['Rules']
         # Scenario #1 
         if any("Transitions" in keys for keys in Rules):
@@ -94,7 +94,7 @@ def createOrUpdateLCP(Name):
                         TransitionStatus.append('No changes made to S3 Lifecycle configuration')
         else:
             # Scenario #2
-            policy = createLCP(Name)
+            policy = createLCP(Lifecycle.Test)
             for p in policy['Rules']:
                 for key, value in p.items():
                     if key =='Transitions':
